@@ -1,0 +1,4 @@
+environments/test/modules/
+token
+.vagrant
+.idea
