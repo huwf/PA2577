@@ -27,34 +27,37 @@ Vagrant.configure(2) do |config|
         provider.setup = false
     end
 
-    config.vm.synced_folder "./environments/test", "/etc/puppetlabs/code/environments/test"
+#    config.vm.synced_folder "./environments/test", "/etc/puppetlabs/code/environments/test"
 
     config.vm.define "appserver" do |appserver|
+        config.puppet_install.puppet_version = '6.24.0'    
         appserver.vm.box = "bento/ubuntu-18.04"
-        appserver.vm.provision "shell", path: "./bootstrap.sh", env: {puppet_env: "test"}
+#        appserver.vm.provision "shell", path: "./bootstrap.sh", env: {puppet_env: "test"}
         
         #config.vm.network "private_network", type: "dhcp", virtualbox__intnet: true
         config.vm.network "private_network", type: "dhcp"
         appserver.vm.hostname = "appserver"
 
         appserver.vm.provision :puppet do |puppet|
-            puppet.environment_path = "environments"
-            puppet.environment = "test"
+#            puppet.environment_path = "environments"
+#            puppet.environment = "test"
+            puppet.manifests_path = '.'
+            puppet.manifest_file = 'git.pp'
             puppet.options = "--verbose --debug"
         end
     end
-    config.vm.define "dbserver" do |dbserver|
-        config.puppet_install.puppet_version = '6.24.0'
-        dbserver.vm.box = "bento/ubuntu-18.04"
-        dbserver.vm.provision "shell", path: "./bootstrap.sh", env: {puppet_env: "test"}
+    # config.vm.define "dbserver" do |dbserver|
+    #     config.puppet_install.puppet_version = '6.24.0'
+    #     dbserver.vm.box = "bento/ubuntu-18.04"
+    #     dbserver.vm.provision "shell", path: "./bootstrap.sh", env: {puppet_env: "test"}
 
-        dbserver.vm.hostname = "dbserver"
-        config.vm.network "private_network", type: "dhcp"
+    #     dbserver.vm.hostname = "dbserver"
+    #     config.vm.network "private_network", type: "dhcp"
 
-        dbserver.vm.provision :puppet do |puppet|
-            puppet.environment_path = "environments"
-            puppet.environment = "test"
-            puppet.options = "--verbose --debug"
-        end
-    end
+    #     dbserver.vm.provision :puppet do |puppet|
+    #         puppet.environment_path = "environments"
+    #         puppet.environment = "test"
+    #         puppet.options = "--verbose --debug"
+    #     end
+    # end
 end

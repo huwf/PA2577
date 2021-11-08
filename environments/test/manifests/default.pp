@@ -1,7 +1,3 @@
-file {/etc/puppetlabs/code/environments/test:
-  ensure => 'link'
-  target => '/home/vagrant/environments/test'
-}
 
 node default {
   include class_default
