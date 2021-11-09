@@ -15,13 +15,15 @@ file { $puppet_env:
 
 # The initial setup can be simply to setup Puppet and cron, but we want to run full setup manually once as well
 
+$cmd = "/opt/puppetlabs/bin/puppet apply --environment test ${puppet_env}/manifests/ && touch /vagrant/.exists.${hostname}"
+
 exec { 'init':
-  command => "/opt/puppetlabs/bin/puppet apply --environment test ${puppet_env}/manifests/ && touch /vagrant/.exists.${hostname}",
+  command => "${cmd}",
   creates => "/vagrant/.exists.${hostname}",
 }
 
 cron { 'setup-cron':
-  command => "cd ${gitdir} && /opt/puppetlabs/bin/puppet apply --environment test ${puppet_env}/manifests/",
+  command => "cd ${gitdir} && git pull && ${cmd}",
   hour    => '*',
   minute  => '*/15',  
 }
