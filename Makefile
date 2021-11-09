@@ -9,8 +9,11 @@ up: plugin
 virtualbox: plugin
 	TOKEN=$(TOKEN) vagrant up --provider virtualbox
 
-digitalocean: plugin
-	TOKEN=$(TOKEN) vagrant up --provider digitalocean
+do_plugin: plugin
+	vagrant plugin install vagrant-digitalocean
+
+digitalocean: do_plugin
+	TOKEN=$(TOKEN) vagrant up --provider digital_ocean
 
 destroy:
 	TOKEN=$(TOKEN) vagrant destroy -f

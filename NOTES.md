@@ -21,6 +21,15 @@ will seek to find subdomains in the hostname.
 
 TODO: Find out if it would work when running `puppet apply` later...
 
+## `which puppet`
+
+If running as vagrant user, the puppet environment will be in a different place compared to running as root.
+
+    vagrant@appserver:~$ sudo puppet config print environmentpath
+    /etc/puppetlabs/code/environments
+    vagrant@appserver:~$ puppet config print environmentpath
+    /home/vagrant/.puppetlabs/etc/code/environments
+
 ### Puppet apply
 
 To keep masterless Puppet updated we need to regularly update from git. Symlink the mounted directory from Vagrant to the environment, and run `git pull` on it every 15 minutes.
