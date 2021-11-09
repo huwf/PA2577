@@ -3,3 +3,4 @@ token
 .vagrant
 .idea
 hosts
+.exists*
