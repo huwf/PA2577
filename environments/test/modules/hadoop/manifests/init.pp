@@ -8,6 +8,3 @@ class hadoop {
   contain hadoop::config
 }
 
-
-
-

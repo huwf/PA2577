@@ -27,3 +27,8 @@ ssh-appserver:
 provision:
 	TOKEN=$(TOKEN) vagrant provision
 
+rm:
+	rm .exists.hadoop
+
+full-provision-reload: rm 
+	make provision
