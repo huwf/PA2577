@@ -31,14 +31,14 @@ class hadoop::config {
   }
 
 # TODO: Find out where hdfs directory is on the filesystem
-#  exec {"hdfs -mkdir -p /user/vagrant":
-#    creates => "/user/vagrant",
-#    path => $path,
-#    user => "vagrant"
-#  }
+  exec {"hdfs dfs -mkdir -p /user/vagrant/input":
+    path => $path,
+    user => "vagrant"
+  }
 
-#  exec {"hdfs -mkdir ./input":
-#    creates => 
-#  }
+  exec {"start-yarn.sh":
+    path => $path,
+    user => "vagrant"
+  }
 
 }

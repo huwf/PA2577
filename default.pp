@@ -5,8 +5,9 @@
 $puppet_env = "/etc/puppetlabs/code/environments/test"
 $gitdir = "/vagrant/"
 
-exec {'echo "export PATH=$PATH:/opt/puppetlabs/bin" > /etc/profile.d/puppet-bin.sh'
-  creates => /etc/profile.d/puppet-bin.sh
+exec {'echo "export PATH=\$PATH:/opt/puppetlabs/bin" > /etc/profile.d/puppet-bin.sh':
+  creates => "/etc/profile.d/puppet-bin.sh",
+  path => $path,
 }
 
 file { "/vagrant/environments/test":
@@ -25,7 +26,7 @@ $cmd = "/opt/puppetlabs/bin/puppet apply --environment test ${puppet_env}/manife
 
 exec { 'init':
   command => "${cmd}",
-  path => $path
+  path => $path,
   creates => "/vagrant/.exists.${hostname}",
 }
 

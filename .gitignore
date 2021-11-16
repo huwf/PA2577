@@ -1,5 +1,6 @@
 environments/test/modules/*
 !environments/test/hadoop
+!environments/test/hadoop/manifests
 token
 .vagrant
 .idea
