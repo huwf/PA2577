@@ -1,7 +1,10 @@
-environments/test/modules/
+/envi/onments/test/modules/
+!environments/tests/modules/hadoop/
 token
 .vagrant
 .idea
 hosts
 .exists*
 workspace.*
+id_rsa
+id_rsa.pub
