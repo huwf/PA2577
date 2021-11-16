@@ -29,36 +29,36 @@ Vagrant.configure(2) do |config|
 
 #    config.vm.synced_folder "./environments/test", "/etc/puppetlabs/code/environments/test"
 
-    config.vm.define "appserver" do |appserver|
+    config.vm.provider "virtualbox" do |vb|
+    # Display the VirtualBox GUI when booting the machine
+    # vb.gui = true
+    # Customize the amount of memory on the VM:
+    vb.memory = "1024"
+    end
+
+    config.vm.network :forwarded_port, guest: 9870, host: 9870 # NameNode web interface
+    config.vm.network :forwarded_port, guest: 8088, host: 8088 # YARN web interface
+
+    config.vm.define "hadoop" do |hadoop|
         config.puppet_install.puppet_version = '6.24.0'    
-        appserver.vm.box = "bento/ubuntu-18.04"
-#        appserver.vm.provision "shell", path: "./bootstrap.sh", env: {puppet_env: "test"}
+        hadoop.vm.box = "bento/ubuntu-18.04"
+#        hadoop.vm.provision "shell", path: "./bootstrap.sh", env: {puppet_env: "test"}
         
         #config.vm.network "private_network", type: "dhcp", virtualbox__intnet: true
         config.vm.network "private_network", type: "dhcp"
-        appserver.vm.hostname = "appserver"
+        hadoop.vm.hostname = "hadoop"
 
-        appserver.vm.provision :puppet do |puppet|
-#            puppet.environment_path = "environments"
+        hadoop.vm.provision :puppet do |puppet|
+            puppet.environment_path = "environments"
             puppet.environment = "test"
-            puppet.manifests_path = '.'
-            puppet.manifest_file = 'default.pp'
+            puppet.manifests_path = "."
+            puppet.manifest_file  = "default.pp"
+#            puppet.module_path = "modules"
+#            puppet.environment = "test"
+#            puppet.manifests_path = '.'
+#            puppet.manifest_file = 'default.pp'
             puppet.options = "--verbose --debug"
         end
-    end
-    config.vm.define "dbserver" do |dbserver|
-        config.puppet_install.puppet_version = '6.24.0'
-        dbserver.vm.box = "bento/ubuntu-18.04"
-        # dbserver.vm.provision "shell", path: "./bootstrap.sh", env: {puppet_env: "test"}
-
-        dbserver.vm.hostname = "dbserver"
-        config.vm.network "private_network", type: "dhcp"
-
-        dbserver.vm.provision :puppet do |puppet|
-            puppet.environment = "test"
-            puppet.manifests_path = '.'
-            puppet.manifest_file = 'default.pp'
-            puppet.options = "--verbose --debug"
-        end
+        
     end
 end
